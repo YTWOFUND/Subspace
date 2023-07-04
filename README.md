@@ -27,11 +27,11 @@ nano docker-compose.yml
 ```
 4. Copy completely and paste into nano
 ```
-  version: "3.7"
+   version: "3.7"
   services:
     node:
       # For running on Aarch64 add `-aarch64` after `DATE`
-      image: ghcr.io/subspace/node:gemini-3c-2023-mar-14
+      image: ghcr.io/subspace/node:gemini-3e-2023-jun-30
       volumes:
   # Instead of specifying volume (which will store data in `/var/lib/docker`), you can
   # alternatively specify path to the directory where files will be stored, just make
@@ -45,19 +45,19 @@ nano docker-compose.yml
         - "0.0.0.0:30433:30433"
       restart: unless-stopped
       command: [
-        "--chain", "gemini-3c",
-        "--base-path", "/var/subspace",
+        "--chain", "gemini-3e",
         "--execution", "wasm",
         "--blocks-pruning", "archive",
         "--state-pruning", "archive",
-        "--port", "30333",
-        "--dsn-listen-on", "/ip4/0.0.0.0/tcp/30433",
-        "--rpc-cors", "all",
-        "--rpc-methods", "safe",
-        "--unsafe-ws-external",
         "--dsn-disable-private-ips",
         "--no-private-ipv4",
         "--validator",
+        "--base-path", "/var/subspace",
+        "--prometheus-external",
+        "--prometheus-port", "9615",
+        "--rpc-cors", "all",
+        "--unsafe-rpc-external",
+        "--rpc-methods", "safe",
   # Replace `INSERT_YOUR_ID` with your node ID (will be shown in telemetry)
         "--name", "INSERT_YOUR_ID"
       ]
@@ -72,7 +72,7 @@ nano docker-compose.yml
         node:
           condition: service_healthy
       # For running on Aarch64 add `-aarch64` after `DATE`
-      image: ghcr.io/subspace/farmer:gemini-3c-2023-mar-14
+      image: ghcr.io/subspace/farmer:gemini-3e-2023-jun-30
       volumes:
   # Instead of specifying volume (which will store data in `/var/lib/docker`), you can
   # alternatively specify path to the directory where files will be stored, just make
@@ -92,7 +92,7 @@ nano docker-compose.yml
         "--listen-on", "/ip4/0.0.0.0/tcp/30533",
   # Replace `WALLET_ADDRESS` with your Polkadot.js wallet address
         "--reward-address", "WALLET_ADDRESS",
-  # Replace `PLOT_SIZE` with plot size in gigabytes or terabytes, for instance 100G or 2T (but leave at least 60G of disk space for node and some for OS)
+  # Replace `PLOT_SIZE` with plot size in gigabytes or terabytes, for example 100G or 2T (but leave at least 60G of disk space for node and some for OS)
         "--plot-size", "PLOT_SIZE"
       ]
   volumes:
